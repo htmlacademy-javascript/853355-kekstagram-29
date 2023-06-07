@@ -1,16 +1,16 @@
 function isMatching(str, num) {
-  return str.length === num ? console.log('true') : console.log('false');
+  return str.length === num;
 }
 isMatching('hello', 6);
 
 function isPalindrome(str) {
-  return str.toUpperCase() === str.toUpperCase().split('').reverse().join('') ? console.log('true') : console.log('false');
+  return str.toUpperCase() === str.toUpperCase().split('').reverse().join('');
 }
 isPalindrome('tenet');
 
 function numbersSeparator(str) {
   const numbersArray = str.match(/\d+/g);
-  return numbersArray === null ? console.log('NaN') : console.log(numbersArray.join(''));
+  return numbersArray === null ? 'NaN' : numbersArray.join('');
 }
 
 numbersSeparator('This1 is b3ers13');
