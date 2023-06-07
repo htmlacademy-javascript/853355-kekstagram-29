@@ -10,7 +10,7 @@ isPalindrome('tenet');
 
 function numbersSeparator(str) {
   const numbersArray = str.match(/\d+/g);
-  return numbersArray === null ? 'NaN' : numbersArray.join('');
+  return numbersArray === null ? 'NaN' : numbersArray.join('').replace(/^0+/, '');
 }
 
 numbersSeparator('This1 is b3ers13');
