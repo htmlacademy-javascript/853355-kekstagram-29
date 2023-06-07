@@ -38,7 +38,6 @@ const generatePosts = (number) => {
       comments: generateComments(getRandomWithinRange(0, 30))
     });
   }
-
   return posts;
 };
 
