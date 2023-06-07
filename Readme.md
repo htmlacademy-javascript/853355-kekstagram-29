@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 - Студент: [Amir Farkhadov](https://up.htmlacademy.ru/javascript/29/user/853355).
-- Наставник: [Антон Попов] (https://htmlacademy.ru/profile/joker).
+- Наставник: [Антон Попов](https://htmlacademy.ru/profile/joker).
 
 --
 

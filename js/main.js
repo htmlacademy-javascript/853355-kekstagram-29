@@ -11,14 +11,17 @@ const commentAuthors = [
   'Masha', 'Petya', 'Vasya', 'Amir', 'Sasha', 'Misha', 'Abbos', 'Jasur', 'Vova', 'Sergey', 'Vladimir'
 ];
 
+const getRandomArrayElement = (elements) => elements[Math.floor(Math.random() * elements.length)];
+const getRandomWithinRange = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
 const generateComments = (number) => {
   const comments = [];
   for (let i = 0; i < number; i++) {
     comments.push({
       id: i,
-      avatar: `img/avatar-${Math.floor(Math.random() * 6) + 1}.svg`,
-      message: commentTexts[Math.floor(Math.random() * commentTexts.length)],
-      name: commentAuthors[Math.floor(Math.random() * commentAuthors.length)]
+      avatar: `img/avatar-${getRandomWithinRange(1, 6)}.svg`,
+      message: getRandomArrayElement(commentTexts),
+      name: getRandomArrayElement(commentAuthors)
     });
   }
   return comments;
@@ -31,12 +34,12 @@ const generatePosts = (number) => {
       id: i,
       url: `photos/${i}.jpg`,
       description: `nice photo number ${i}`,
-      likes: Math.floor(Math.random() * 186) + 15,
-      comments: generateComments(Math.floor(Math.random() * 30))
+      likes: getRandomWithinRange(15, 200),
+      comments: generateComments(getRandomWithinRange(0, 30))
     });
   }
 
   return posts;
 };
 
-console.log(generatePosts(35));
+generatePosts(35);
