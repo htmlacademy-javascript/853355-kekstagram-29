@@ -3,7 +3,7 @@
 - Студент: [Amir Farkhadov](https://up.htmlacademy.ru/javascript/29/user/853355).
 - Наставник: [Антон Попов] (https://htmlacademy.ru/profile/joker).
 
----
+--
 
 _Не удаляйте и не изменяйте самовольно файлы и папки:_
 _`.editorconfig`, `.eslintrc`, `.gitattributes`, `.gitignore`, `package-lock.json`, `package.json`., `.github`_
