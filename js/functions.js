@@ -13,4 +13,4 @@ function numbersSeparator(str) {
   return numbersArray === null ? console.log('NaN') : console.log(numbersArray.join(''));
 }
 
-numbersSeparator('This1 is b3ers1');
+numbersSeparator('This1 is b3ers13');
