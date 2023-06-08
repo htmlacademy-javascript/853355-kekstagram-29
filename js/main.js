@@ -1,3 +1,5 @@
+import {getRandomArrayElement, getRandomWithinRange} from './utils.js';
+
 const commentTexts = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -10,9 +12,6 @@ const commentTexts = [
 const commentAuthors = [
   'Masha', 'Petya', 'Vasya', 'Amir', 'Sasha', 'Misha', 'Abbos', 'Jasur', 'Vova', 'Sergey', 'Vladimir'
 ];
-
-const getRandomArrayElement = (elements) => elements[Math.floor(Math.random() * elements.length)];
-const getRandomWithinRange = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const generateComments = (number) => {
   const comments = [];
