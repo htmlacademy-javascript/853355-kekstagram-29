@@ -43,7 +43,7 @@ const generateComments = (number) => {
 
 const generatePosts = (number) => {
   const posts = [];
-  for (let i = 0; i < number; i++) {
+  for (let i = 1; i <= number; i++) {
     posts.push({
       id: i,
       url: `photos/${i}.jpg`,
@@ -55,5 +55,23 @@ const generatePosts = (number) => {
   return posts;
 };
 
+const displayPosts = () => {
+  const posts = generatePosts(25);
+  const postsContainer = document.querySelector('.pictures');
+  const postTemplate = document.querySelector('#picture').content;
+  const fragment = document.createDocumentFragment();
 
-export {generatePosts};
+  posts.forEach((post) => {
+    const postElement = postTemplate.cloneNode(true);
+    postElement.querySelector('.picture__img').src = post.url;
+    postElement.querySelector('.picture__img').alt = post.description;
+    postElement.querySelector('.picture__likes').textContent = post.likes;
+    postElement.querySelector('.picture__comments').textContent = post.comments.length;
+    fragment.appendChild(postElement);
+  });
+  postsContainer.appendChild(fragment);
+};
+
+displayPosts();
+
+export {displayPosts};
