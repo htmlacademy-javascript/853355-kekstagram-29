@@ -2,13 +2,10 @@ const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const bigPictureDescription = bigPicture.querySelector('.social__caption');
 const bigPictureLikesCount = bigPicture.querySelector('.likes-count');
-const bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
 const bigPictureLoader = bigPicture.querySelector('.social__comments-loader');
 const bigPictureComments = bigPicture.querySelector('.social__comments');
-
-const bigPictureCommentsCounter = bigPicture.querySelector('.social__comment-count');
+const bigPictureCommentsShown = bigPicture.querySelector('.social__comment-count');
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
-
 const body = document.querySelector('body');
 
 let generateMoreComments;
@@ -36,16 +33,19 @@ const closeBigPicture = () => {
 };
 
 const showBigPicture = ({url, description, likes, comments}) => {
+  const generateCommentCounter = () => {
+    bigPictureCommentsShown.textContent = `${commentsShown > comments.length ?
+      comments.length : commentsShown} из ${comments.length} комментариев`;
+  };
+
   bigPicture.classList.remove('hidden');
-  bigPictureCommentsCounter.classList.add('hidden');
   body.classList.add('modal-open');
 
   bigPictureImg.src = url;
   bigPictureDescription.textContent = description;
   bigPictureLikesCount.textContent = likes;
-  bigPictureCommentsCount.textContent = comments.length;
 
-  if (comments.length > 5) {
+  if (comments.length > 5 && bigPictureLoader.classList.contains('hidden')) {
     bigPictureLoader.classList.remove('hidden');
   }
 
@@ -54,6 +54,8 @@ const showBigPicture = ({url, description, likes, comments}) => {
     nextComments.map((comment) => generateComment(comment));
 
     commentsShown += 5;
+    generateCommentCounter();
+
     if (commentsShown >= comments.length) {
       bigPictureLoader.classList.add('hidden');
     }
@@ -62,16 +64,12 @@ const showBigPicture = ({url, description, likes, comments}) => {
   generateMoreComments();
 
   bigPictureLoader.addEventListener('click', generateMoreComments);
-
+  bigPictureClose.addEventListener('click', closeBigPicture);
   window.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       closeBigPicture();
     }
-  });
-
-  bigPictureClose.addEventListener('click', () => {
-    closeBigPicture();
   });
 };
 
