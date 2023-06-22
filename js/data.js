@@ -1,5 +1,5 @@
 import {getRandomArrayElement, getRandomWithinRange} from './utils.js';
-import {showBigPicture} from './big-picture.js';
+import {AvatarRange, LikesRange, CommentsRange} from './const.js';
 
 const commentTexts = [
   'Всё отлично!',
@@ -14,27 +14,12 @@ const commentAuthors = [
   'Masha', 'Petya', 'Vasya', 'Amir', 'Sasha', 'Misha', 'Abbos', 'Jasur', 'Vova', 'Sergey', 'Vladimir'
 ];
 
-const AVATAR_RANGE = {
-  min: 1,
-  max: 6
-};
-
-const LIKES_RANGE = {
-  min: 15,
-  max: 200
-};
-
-const COMMENTS_RANGE = {
-  min: 0,
-  max: 30
-};
-
 const generateComments = (number) => {
   const comments = [];
   for (let i = 0; i < number; i++) {
     comments.push({
       id: i,
-      avatar: `img/avatar-${getRandomWithinRange(AVATAR_RANGE.min, AVATAR_RANGE.max)}.svg`,
+      avatar: `img/avatar-${getRandomWithinRange(AvatarRange.MIN, AvatarRange.MAX)}.svg`,
       message: getRandomArrayElement(commentTexts),
       name: getRandomArrayElement(commentAuthors)
     });
@@ -49,41 +34,11 @@ const generatePosts = (number) => {
       id: i,
       url: `photos/${i}.jpg`,
       description: `nice photo number ${i}`,
-      likes: getRandomWithinRange(LIKES_RANGE.min, LIKES_RANGE.max),
-      comments: generateComments(getRandomWithinRange(COMMENTS_RANGE.min, COMMENTS_RANGE.max))
+      likes: getRandomWithinRange(LikesRange.MIN, LikesRange.MAX),
+      comments: generateComments(getRandomWithinRange(CommentsRange.MIN, CommentsRange.MAX))
     });
   }
   return posts;
 };
 
-const displayPosts = () => {
-  const posts = generatePosts(25);
-  const postsContainer = document.querySelector('.pictures');
-  const postTemplate = document.querySelector('#picture').content;
-  const fragment = document.createDocumentFragment();
-
-  posts.forEach((post) => {
-    const postElement = postTemplate.cloneNode(true);
-    const postImage = postElement.querySelector('.picture__img');
-    postImage.src = post.url;
-    postImage.alt = post.description;
-    postImage.dataset.id = post.id;
-    postElement.querySelector('.picture__likes').textContent = post.likes;
-    postElement.querySelector('.picture__comments').textContent = post.comments.length;
-    fragment.appendChild(postElement);
-  });
-
-  postsContainer.appendChild(fragment);
-
-  postsContainer.addEventListener('click', (evt) => {
-    if (evt.target.tagName !== 'IMG') {
-      return;
-    }
-    const postById = posts.find((post) => post.id === Number(evt.target.dataset.id));
-    showBigPicture(postById);
-  });
-};
-
-displayPosts();
-
-export {displayPosts};
+export {generatePosts};

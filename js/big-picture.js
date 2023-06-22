@@ -1,77 +1,74 @@
+import { COMMENTS_STEP } from './const.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const bigPictureDescription = bigPicture.querySelector('.social__caption');
 const bigPictureLikesCount = bigPicture.querySelector('.likes-count');
-const bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
 const bigPictureLoader = bigPicture.querySelector('.social__comments-loader');
 const bigPictureComments = bigPicture.querySelector('.social__comments');
-
-const bigPictureCommentsCounter = bigPicture.querySelector('.social__comment-count');
+const bigPictureCommentsShown = bigPicture.querySelector('.social__comment-count');
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
-
+const bigPictureComment = document.getElementById('comment_item');
 const body = document.querySelector('body');
 
-let generateMoreComments;
-let commentsShown = 0;
-
 const generateComment = (element) => {
-  const comment = document.createElement('li');
-  comment.classList.add('social__comment');
-  comment.innerHTML = `<img class="social__picture"
-  src="${element.avatar}"
-  alt="${element.name}" width="35" height="35">
-  <p class="social__text">${element.message}</p>`;
+  const comment = bigPictureComment.content.cloneNode(true);
+  comment.querySelector('.social__picture').src = element.avatar;
+  comment.querySelector('.social__picture').alt = element.name;
+  comment.querySelector('.social__text').textContent = element.message;
   bigPictureComments.appendChild(comment);
 };
 
 const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
-  commentsShown = 0;
   bigPictureComments.innerHTML = '';
 
   window.removeEventListener('keydown', closeBigPicture);
-  body.classList.remove('modal-open');
-  bigPictureLoader.removeEventListener('click', generateMoreComments);
   bigPictureClose.removeEventListener('click', closeBigPicture);
+  body.classList.remove('modal-open');
 };
 
 const showBigPicture = ({url, description, likes, comments}) => {
+  let commentsShown = bigPictureComments.children.length;
+
+  const generateCommentCounter = () => {
+    bigPictureCommentsShown.textContent = `${commentsShown > comments.length ?
+      comments.length : commentsShown} из ${comments.length} комментариев`;
+  };
+
   bigPicture.classList.remove('hidden');
-  bigPictureCommentsCounter.classList.add('hidden');
   body.classList.add('modal-open');
 
   bigPictureImg.src = url;
   bigPictureDescription.textContent = description;
   bigPictureLikesCount.textContent = likes;
-  bigPictureCommentsCount.textContent = comments.length;
 
-  if (comments.length > 5) {
+  if (comments.length > COMMENTS_STEP && bigPictureLoader.classList.contains('hidden')) {
     bigPictureLoader.classList.remove('hidden');
   }
 
-  generateMoreComments = () => {
-    const nextComments = comments.slice(commentsShown, commentsShown + 5);
+  const generateMoreComments = () => {
+    const nextComments = comments.slice(commentsShown, commentsShown + COMMENTS_STEP);
     nextComments.map((comment) => generateComment(comment));
 
-    commentsShown += 5;
+    commentsShown += COMMENTS_STEP;
+    generateCommentCounter();
+
     if (commentsShown >= comments.length) {
       bigPictureLoader.classList.add('hidden');
+      bigPictureLoader.removeEventListener('click', generateMoreComments);
     }
   };
 
   generateMoreComments();
 
   bigPictureLoader.addEventListener('click', generateMoreComments);
-
+  bigPictureClose.addEventListener('click', closeBigPicture);
   window.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       closeBigPicture();
     }
-  });
-
-  bigPictureClose.addEventListener('click', () => {
-    closeBigPicture();
   });
 };
 
