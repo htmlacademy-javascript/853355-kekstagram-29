@@ -1,3 +1,5 @@
+import {ERROR_DURATION, MAX_HASHTAGS_COUNT} from './const.js';
+
 const form = document.querySelector('.img-upload__form');
 const imgInput = form.querySelector('.img-upload__input');
 const imgUploadOverlay = form.querySelector('.img-upload__overlay');
@@ -14,7 +16,7 @@ pristine.addValidator(hashtagInput, () => {
   if (hashtags.length === 1 && hashtags[0] === '') {
     return true;
   }
-  if (hashtags.length > 5) {
+  if (hashtags.length > MAX_HASHTAGS_COUNT) {
     return false;
   }
   return hashtags.every((hashtag) => /^#[a-zA-Z0-9]*$/.test(hashtag));
@@ -33,7 +35,7 @@ const showError = () => {
   setTimeout(() => {
     hashtagInput.classList.remove('has-error');
     descriptionInput.classList.remove('has-error');
-  }, 5000);
+  }, ERROR_DURATION);
 };
 
 const onCloseUploadOverlay = () => {
@@ -57,6 +59,7 @@ const onFormSubmit = (evt) => {
     onCloseUploadOverlay();
     showSuccessMessage();
 
+    closeButton.removeEventListener('click', onCloseUploadOverlay);
     form.removeEventListener('submit', onFormSubmit);
     window.removeEventListener('keydown',onEscapeKeydown);
 

@@ -14,5 +14,7 @@ const CommentsRange = {
 };
 
 const COMMENTS_STEP = 5;
+const MAX_HASHTAGS_COUNT = 5;
+const ERROR_DURATION = 5000;
 
-export {AvatarRange, LikesRange, CommentsRange, COMMENTS_STEP};
+export {AvatarRange, LikesRange, CommentsRange, COMMENTS_STEP, MAX_HASHTAGS_COUNT, ERROR_DURATION};
