@@ -68,13 +68,23 @@ const onFormSubmit = (evt) => {
   }
 };
 
-const onOpenUploadOverlay = () => {
+const onOpenUploadOverlay = (evt) => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
+
+  const reader = new FileReader();
+  reader.addEventListener('load', (event) => {
+    form.querySelector('.img-upload__preview img').src = event.target.result;
+  });
+  reader.readAsDataURL(evt.target.files[0]);
 
   closeButton.addEventListener('click', onCloseUploadOverlay);
   window.addEventListener('keydown',onEscapeKeydown);
   form.addEventListener('submit', onFormSubmit);
 };
 
-imgInput.addEventListener('input', onOpenUploadOverlay);
+const initUploadImg = () => {
+  imgInput.addEventListener('change', (evt) => onOpenUploadOverlay(evt));
+};
+
+export {initUploadImg};
