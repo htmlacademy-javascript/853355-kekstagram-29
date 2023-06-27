@@ -1,4 +1,5 @@
 import {ERROR_DURATION, MAX_HASHTAGS_COUNT} from './const.js';
+import {initSlider} from './image-edit.js';
 
 const form = document.querySelector('.img-upload__form');
 const imgInput = form.querySelector('.img-upload__input');
@@ -71,6 +72,8 @@ const onFormSubmit = (evt) => {
 const onOpenUploadOverlay = (evt) => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
+
+  initSlider();
 
   const reader = new FileReader();
   reader.addEventListener('load', (event) => {
