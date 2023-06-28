@@ -1,3 +1,6 @@
+import {ERROR_DURATION, MAX_HASHTAGS_COUNT} from './const.js';
+import {initSlider} from './image-edit.js';
+
 const form = document.querySelector('.img-upload__form');
 const imgInput = form.querySelector('.img-upload__input');
 const imgUploadOverlay = form.querySelector('.img-upload__overlay');
@@ -14,7 +17,7 @@ pristine.addValidator(hashtagInput, () => {
   if (hashtags.length === 1 && hashtags[0] === '') {
     return true;
   }
-  if (hashtags.length > 5) {
+  if (hashtags.length > MAX_HASHTAGS_COUNT) {
     return false;
   }
   return hashtags.every((hashtag) => /^#[a-zA-Z0-9]*$/.test(hashtag));
@@ -33,7 +36,7 @@ const showError = () => {
   setTimeout(() => {
     hashtagInput.classList.remove('has-error');
     descriptionInput.classList.remove('has-error');
-  }, 5000);
+  }, ERROR_DURATION);
 };
 
 const onCloseUploadOverlay = () => {
@@ -57,6 +60,7 @@ const onFormSubmit = (evt) => {
     onCloseUploadOverlay();
     showSuccessMessage();
 
+    closeButton.removeEventListener('click', onCloseUploadOverlay);
     form.removeEventListener('submit', onFormSubmit);
     window.removeEventListener('keydown',onEscapeKeydown);
 
@@ -65,13 +69,25 @@ const onFormSubmit = (evt) => {
   }
 };
 
-const onOpenUploadOverlay = () => {
+const onOpenUploadOverlay = (evt) => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
+
+  initSlider();
+
+  const reader = new FileReader();
+  reader.addEventListener('load', (event) => {
+    form.querySelector('.img-upload__preview img').src = event.target.result;
+  });
+  reader.readAsDataURL(evt.target.files[0]);
 
   closeButton.addEventListener('click', onCloseUploadOverlay);
   window.addEventListener('keydown',onEscapeKeydown);
   form.addEventListener('submit', onFormSubmit);
 };
 
-imgInput.addEventListener('input', onOpenUploadOverlay);
+const initUploadImg = () => {
+  imgInput.addEventListener('change', (evt) => onOpenUploadOverlay(evt));
+};
+
+export {initUploadImg};
