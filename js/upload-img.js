@@ -1,16 +1,16 @@
 import { ERROR_DURATION, MAX_HASHTAGS_COUNT } from './const.js';
 import { initSlider } from './image-edit.js';
 import { postData } from './data.js';
+import { showErrorMessage } from './error-message.js';
+import { showSuccessMessage } from './success-message.js';
 
 const form = document.querySelector('.img-upload__form');
 const imgInput = form.querySelector('.img-upload__input');
 const imgUploadOverlay = form.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
 const closeButton = form.querySelector('.img-upload__cancel');
-const successMessage = document.querySelector('#success').content.querySelector('.success');
 const hashtagInput = form.querySelector('.text__hashtags');
 const descriptionInput = form.querySelector('.text__description');
-const errorMessage = document.querySelector('#error').content.querySelector('.error');
 
 const pristine = new Pristine(form);
 
@@ -40,55 +40,6 @@ const onEscapeOverlay = (evt) => {
   }
 };
 
-const removeSuccessMessage = (success) => {
-  success.remove();
-};
-
-const onEscapeSuccessMessage = (evt, success) => {
-  if (evt.key === 'Escape') {
-    removeSuccessMessage(success);
-  }
-};
-
-const showSuccessMessage = () => {
-  const success = successMessage.cloneNode(true);
-  const button = success.querySelector('.success__button');
-  const escapeSuccessHandler = (evt) => onEscapeSuccessMessage(evt, success);
-
-  window.removeEventListener('keydown',onEscapeOverlay);
-
-  button.addEventListener('click', () => {
-    removeSuccessMessage(success);
-    window.removeEventListener('keydown', escapeSuccessHandler, {once: true});
-  }, {once: true});
-  window.addEventListener('keydown', escapeSuccessHandler, {once: true});
-  document.body.append(success);
-};
-
-const removeErrorMessage = (error) => {
-  error.remove();
-  window.addEventListener('keydown',onEscapeOverlay);
-};
-
-const onEscapeErrorMessage = (evt, error) => {
-  if (evt.key === 'Escape') {
-    removeErrorMessage(error);
-  }
-};
-
-const showErrorMessage = () => {
-  const error = errorMessage.cloneNode(true);
-  const button = error.querySelector('.error__button');
-  const escapeErrorHandler = (evt) => onEscapeErrorMessage(evt, error);
-
-  button.addEventListener('click', () => {
-    removeErrorMessage(error);
-    window.removeEventListener('keydown', escapeErrorHandler, {once: true});
-  }, {once: true});
-  window.addEventListener('keydown', escapeErrorHandler, {once: true});
-  document.body.append(error);
-};
-
 const showValidationError = () => {
   hashtagInput.classList.add('has-error');
   descriptionInput.classList.add('has-error');
@@ -100,7 +51,7 @@ const showValidationError = () => {
 
 const onSuccess = (cb) => {
   onCloseUploadOverlay();
-  showSuccessMessage();
+  showSuccessMessage(onEscapeOverlay);
 
   closeButton.removeEventListener('click', onCloseUploadOverlay);
   window.removeEventListener('keydown',onEscapeOverlay);
@@ -108,7 +59,7 @@ const onSuccess = (cb) => {
 };
 
 const onFail = () => {
-  showErrorMessage();
+  showErrorMessage(onEscapeOverlay);
   window.removeEventListener('keydown',onEscapeOverlay);
 };
 
