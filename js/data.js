@@ -1,7 +1,10 @@
 import { displayPosts } from './posts.js';
 
+const GET_URL = 'https://29.javascript.pages.academy/kekstagram/data';
+const POST_URL = 'https://29.javascript.pages.academy/kekstagram';
+
 const getData = () => {
-  fetch('https://29.javascript.pages.academy/kekstagram/data')
+  fetch(GET_URL)
     .then((response) => response.json())
     .then((data) => {
       displayPosts(data);
@@ -11,7 +14,7 @@ const getData = () => {
 const postData = (onSuccess, onFail, onFormSubmit, form) => {
   const formData = new FormData(form);
   fetch(
-    'https://29.javascript.pages.academy/kekstagram',
+    POST_URL,
     {
       method: 'POST',
       body: formData,
