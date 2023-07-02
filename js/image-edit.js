@@ -1,11 +1,57 @@
-import { sliderSettings } from './const.js';
-
 const filters = document.querySelector('.img-upload__effects');
 const sliderContainer = document.querySelector('.effect-level__slider');
 const sliderParentContainer = document.querySelector('.img-upload__effect-level');
 const imgPreview = document.querySelector('.img-upload__preview img');
 
 let currentSlider = null;
+
+const sliderSettings = {
+  chrome: {
+    min: 0,
+    max: 1,
+    step: 0.1,
+    start: 0,
+    setFilter: (image, value) => {
+      image.style.filter = `grayscale(${value})`;
+    }
+  },
+  sepia: {
+    min: 0,
+    max: 1,
+    step: 0.1,
+    start: 0,
+    setFilter: (image, value) => {
+      image.style.filter = `sepia(${value})`;
+    }
+  },
+  marvin: {
+    min: 0,
+    max: 100,
+    step: 1,
+    start: 0,
+    setFilter: (image, value) => {
+      image.style.filter = `invert(${value}%)`;
+    }
+  },
+  phobos: {
+    min: 0,
+    max: 3,
+    step: 0.1,
+    start: 0,
+    setFilter: (image, value) => {
+      image.style.filter = `blur(${value}px)`;
+    }
+  },
+  heat: {
+    min: 1,
+    max: 3,
+    step: 0.1,
+    start: 1,
+    setFilter: (image, value) => {
+      image.style.filter = `brightness(${value})`;
+    }
+  }
+};
 
 const createSliderManager = (min, max, step, start) => {
   if (currentSlider) {
@@ -27,76 +73,21 @@ const createSliderManager = (min, max, step, start) => {
 const createSliderListener = (effect, image) => {
   sliderContainer.noUiSlider.on('update', (values, handle) => {
     const value = values[handle];
-    switch (effect) {
-      case 'chrome':
-        image.style.filter = `grayscale(${value})`;
-        break;
-      case 'sepia':
-        image.style.filter = `${effect}(${value})`;
-        break;
-      case 'marvin':
-        image.style.filter = `invert(${value}%)`;
-        break;
-      case 'phobos':
-        image.style.filter = `blur(${value}px)`;
-        break;
-      case 'heat':
-        image.style.filter = `brightness(${value})`;
-        break;
-    }
+    sliderSettings[effect].setFilter(image, value);
   });
 };
 
 const createSlider = (effect) => {
-  switch (effect) {
-    case 'chrome':
-      createSliderManager(
-        sliderSettings.chrome.MIN,
-        sliderSettings.chrome.MAX,
-        sliderSettings.chrome.STEP,
-        sliderSettings.chrome.START,
-      );
-      break;
-    case 'sepia':
-      createSliderManager(
-        sliderSettings.sepia.MIN,
-        sliderSettings.sepia.MAX,
-        sliderSettings.sepia.STEP,
-        sliderSettings.sepia.START,
-      );
-      break;
-    case 'marvin':
-      createSliderManager(
-        sliderSettings.marvin.MIN,
-        sliderSettings.marvin.MAX,
-        sliderSettings.marvin.STEP,
-        sliderSettings.marvin.START,
-      );
-      break;
-    case 'phobos':
-      createSliderManager(
-        sliderSettings.phobos.MIN,
-        sliderSettings.phobos.MAX,
-        sliderSettings.phobos.STEP,
-        sliderSettings.phobos.START,
-      );
-      break;
-    case 'heat':
-      createSliderManager(
-        sliderSettings.heat.MIN,
-        sliderSettings.heat.MAX,
-        sliderSettings.heat.STEP,
-        sliderSettings.heat.START,
-      );
-      break;
-  }
+  const {min, max, step, start} = sliderSettings[effect];
+  createSliderManager(min, max, step, start);
 };
 
 const initSlider = () => {
   filters.addEventListener('change', (evt) => {
     if (evt.target.classList.contains('effects__radio')) {
       const effect = evt.target.value;
-      imgPreview.classList = '';
+      imgPreview.removeAttribute('class');
+      imgPreview.removeAttribute('style');
       sliderParentContainer.classList.add('hidden');
       sliderContainer.classList.add('hidden');
 
