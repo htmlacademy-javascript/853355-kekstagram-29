@@ -18,7 +18,7 @@ const showErrorMessage = (onEscapeOverlay) => {
 
   button.addEventListener('click', () => {
     removeErrorMessage(error, onEscapeOverlay);
-    window.removeEventListener('keydown', escapeErrorHandler, {once: true});
+    window.removeEventListener('keydown', escapeErrorHandler);
   }, {once: true});
   window.addEventListener('keydown', escapeErrorHandler, {once: true});
   document.body.append(error);

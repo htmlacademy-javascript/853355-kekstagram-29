@@ -19,7 +19,7 @@ const showSuccessMessage = (onEscapeOverlay) => {
 
   button.addEventListener('click', () => {
     removeSuccessMessage(success);
-    window.removeEventListener('keydown', escapeSuccessHandler, {once: true});
+    window.removeEventListener('keydown', escapeSuccessHandler);
   }, {once: true});
   window.addEventListener('keydown', escapeSuccessHandler, {once: true});
   document.body.append(success);

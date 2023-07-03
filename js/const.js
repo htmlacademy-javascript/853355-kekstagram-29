@@ -1,3 +1,8 @@
+const COMMENTS_STEP = 5;
+const MAX_HASHTAGS_COUNT = 5;
+const ERROR_DURATION = 5000;
+const POSTS_COUNT = 10;
+
 const AvatarRange = {
   MIN: 1,
   MAX: 6
@@ -13,9 +18,4 @@ const CommentsRange = {
   MAX: 30
 };
 
-const COMMENTS_STEP = 5;
-const MAX_HASHTAGS_COUNT = 5;
-const ERROR_DURATION = 5000;
-
-
-export {AvatarRange, LikesRange, CommentsRange, COMMENTS_STEP, MAX_HASHTAGS_COUNT, ERROR_DURATION};
+export {AvatarRange, LikesRange, CommentsRange, COMMENTS_STEP, MAX_HASHTAGS_COUNT, ERROR_DURATION, POSTS_COUNT};

@@ -1,13 +1,11 @@
-import { displayPosts } from './posts.js';
-
 const GET_URL = 'https://29.javascript.pages.academy/kekstagram/data';
-const POST_URL = 'https://29.javascript.pages.academy/kekstagram';
+const POST_URL = 'https://29.javascript.pages.academy/keksta1gram';
 
-const getData = () => {
+const getData = (cb) => {
   fetch(GET_URL)
     .then((response) => response.json())
     .then((data) => {
-      displayPosts(data);
+      cb(data);
     });
 };
 
