@@ -9,7 +9,7 @@ let postsCopy;
 
 const defaultPosts = () => postsCopy;
 const randomPosts = () => getRandomArrayElements(postsCopy, POSTS_COUNT);
-const discussedPosts = () => postsCopy.sort((a, b) => b.comments.length - a.comments.length);
+const discussedPosts = () => postsCopy.slice().sort((a, b) => b.comments.length - a.comments.length);
 const clearPosts = () => {
   const posts = document.querySelectorAll('.picture');
   posts.forEach((post) => post.remove());
@@ -17,6 +17,7 @@ const clearPosts = () => {
 
 const initFilters = (posts) => {
   postsCopy = posts.slice();
+
   const filters = document.querySelector('.img-filters');
   displayPosts(defaultPosts());
 
