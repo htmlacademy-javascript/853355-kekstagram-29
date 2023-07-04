@@ -83,11 +83,16 @@ const createSlider = (effect) => {
 };
 
 const initSlider = () => {
+  if (currentSlider) {
+    sliderParentContainer.classList.add('hidden');
+    currentSlider.destroy();
+  }
+
   filters.addEventListener('change', (evt) => {
     if (evt.target.classList.contains('effects__radio')) {
       const effect = evt.target.value;
       imgPreview.removeAttribute('class');
-      imgPreview.removeAttribute('style');
+      imgPreview.style.filter = '';
       sliderParentContainer.classList.add('hidden');
       sliderContainer.classList.add('hidden');
 
