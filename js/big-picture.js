@@ -19,13 +19,21 @@ const generateComment = (element) => {
   bigPictureComments.appendChild(comment);
 };
 
-const closeBigPicture = () => {
+const closeBigPicture = (onEscape) => {
   bigPicture.classList.add('hidden');
-  bigPictureComments.innerHTML = '';
+  bigPictureImg.textContent = '';
+  bigPictureComments.textContent = '';
 
-  window.removeEventListener('keydown', closeBigPicture);
+  window.removeEventListener('keydown', onEscape);
   bigPictureClose.removeEventListener('click', closeBigPicture);
   body.classList.remove('modal-open');
+};
+
+const onEscKeyDown = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeBigPicture(onEscKeyDown);
+  }
 };
 
 const showBigPicture = ({url, description, likes, comments}) => {
@@ -60,16 +68,11 @@ const showBigPicture = ({url, description, likes, comments}) => {
     }
   };
 
-  generateMoreComments();
-
   bigPictureLoader.addEventListener('click', generateMoreComments);
   bigPictureClose.addEventListener('click', closeBigPicture);
-  window.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      closeBigPicture();
-    }
-  });
+  window.addEventListener('keydown', onEscKeyDown);
+
+  generateMoreComments();
 };
 
 export {showBigPicture};

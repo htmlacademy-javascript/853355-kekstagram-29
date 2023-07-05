@@ -3,6 +3,7 @@ import { initSlider } from './image-edit.js';
 import { postData } from './data.js';
 import { showErrorMessage } from './error-message.js';
 import { showSuccessMessage } from './success-message.js';
+import { initZoom } from './img-zoom.js';
 
 const form = document.querySelector('.img-upload__form');
 const imgInput = form.querySelector('.img-upload__input');
@@ -11,6 +12,7 @@ const body = document.querySelector('body');
 const closeButton = form.querySelector('.img-upload__cancel');
 const hashtagInput = form.querySelector('.text__hashtags');
 const descriptionInput = form.querySelector('.text__description');
+const imgPreview = document.querySelector('.img-upload__preview img');
 
 const pristine = new Pristine(form);
 
@@ -28,6 +30,8 @@ pristine.addValidator(hashtagInput, () => {
 const onCloseUploadOverlay = () => {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
+  imgPreview.removeAttribute('style');
+  imgPreview.removeAttribute('class');
   form.reset();
 };
 
@@ -84,6 +88,8 @@ const onOpenUploadOverlay = (evt) => {
     form.querySelector('.img-upload__preview img').src = e.target.result;
   });
   reader.readAsDataURL(evt.target.files[0]);
+
+  initZoom();
 
   closeButton.addEventListener('click', onCloseUploadOverlay);
   window.addEventListener('keydown',onEscapeOverlay);
