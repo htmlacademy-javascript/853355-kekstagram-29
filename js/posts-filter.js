@@ -2,8 +2,7 @@ import { getRandomArrayElements, debounce } from './utils.js';
 import { displayPosts } from './posts.js';
 import { POSTS_COUNT } from './const.js';
 
-const postsFilter = document.querySelector('.img-filters');
-postsFilter.classList.remove('img-filters--inactive');
+const filters = document.querySelector('.img-filters');
 
 const clearPosts = () => {
   const posts = document.querySelectorAll('.picture');
@@ -11,11 +10,12 @@ const clearPosts = () => {
 };
 
 const initFilters = (posts) => {
+  filters.classList.remove('img-filters--inactive');
+
   const defaultPosts = () => posts.slice();
   const randomPosts = () => getRandomArrayElements(posts, POSTS_COUNT);
   const discussedPosts = () => posts.slice().sort((a, b) => b.comments.length - a.comments.length);
 
-  const filters = document.querySelector('.img-filters');
   displayPosts(defaultPosts());
 
   filters.addEventListener('click', debounce((evt) => {

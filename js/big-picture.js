@@ -67,9 +67,7 @@ const showBigPicture = ({url, description, likes, comments}) => {
     }
   };
 
-  const onLoadClick = () => {
-    showMoreComments();
-  };
+  const onLoadClick = () => showMoreComments();
 
   bigPictureLoader.addEventListener('click', onLoadClick);
   bigPictureClose.addEventListener('click', () => onCloseBigPicture(onEscKeyDown));

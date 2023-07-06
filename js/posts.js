@@ -2,9 +2,9 @@ import {showBigPicture} from './big-picture.js';
 
 let postsArray = [];
 const postsContainer = document.querySelector('.pictures');
+const postTemplate = document.querySelector('#picture').content;
 
 const displayPosts = (posts) => {
-  const postTemplate = document.querySelector('#picture').content;
   const fragment = document.createDocumentFragment();
   postsArray = posts;
 
