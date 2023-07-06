@@ -3,7 +3,7 @@ import { initSlider } from './image-edit.js';
 import { postData } from './data.js';
 import { showErrorMessage } from './error-message.js';
 import { showSuccessMessage } from './success-message.js';
-import { initZoom } from './img-zoom.js';
+import { initZoom } from './image-zoom.js';
 
 const form = document.querySelector('.img-upload__form');
 const imgInput = form.querySelector('.img-upload__input');
@@ -24,22 +24,27 @@ pristine.addValidator(hashtagInput, () => {
   if (hashtags.length > MAX_HASHTAGS_COUNT) {
     return false;
   }
+
+  if (hashtags.length !== new Set(hashtags).size) {
+    return false;
+  }
+
   return hashtags.every((hashtag) => /^#[a-zA-Z0-9]*$/.test(hashtag));
 });
 
-const onCloseUploadOverlay = () => {
+const onCloseUploadOverlay = (onEscape) => {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   imgPreview.removeAttribute('style');
   imgPreview.removeAttribute('class');
   form.reset();
+  window.removeEventListener('keydown',onEscape);
 };
 
 const onEscapeOverlay = (evt) => {
   if (evt.key === 'Escape') {
     if (!(hashtagInput === document.activeElement || !descriptionInput === document.activeElement)) {
-      onCloseUploadOverlay();
-      window.removeEventListener('keydown',onEscapeOverlay);
+      onCloseUploadOverlay(onEscapeOverlay);
     }
   }
 };
@@ -57,8 +62,7 @@ const onSuccess = (cb) => {
   onCloseUploadOverlay();
   showSuccessMessage(onEscapeOverlay);
 
-  closeButton.removeEventListener('click', onCloseUploadOverlay);
-  window.removeEventListener('keydown',onEscapeOverlay);
+  closeButton.removeEventListener('click', () => onCloseUploadOverlay(onEscapeOverlay));
   form.removeEventListener('submit', cb);
 };
 
@@ -91,13 +95,13 @@ const onOpenUploadOverlay = (evt) => {
 
   initZoom();
 
-  closeButton.addEventListener('click', onCloseUploadOverlay);
+  closeButton.addEventListener('click', () => onCloseUploadOverlay(onEscapeOverlay));
   window.addEventListener('keydown',onEscapeOverlay);
   form.addEventListener('submit', onFormSubmit);
 };
 
 const initUploadImg = () => {
-  imgInput.addEventListener('change', (evt) => onOpenUploadOverlay(evt));
+  imgInput.addEventListener('change', onOpenUploadOverlay);
 };
 
 export {initUploadImg};

@@ -3,16 +3,6 @@ import {showBigPicture} from './big-picture.js';
 let postsArray = [];
 const postsContainer = document.querySelector('.pictures');
 
-const postToDisplay = (evt) => {
-  if (evt.target.tagName !== 'IMG') {
-    return;
-  }
-  const postById = postsArray.find((post) => post.id === Number(evt.target.dataset.id));
-  showBigPicture(postById);
-};
-
-postsContainer.addEventListener('click', postToDisplay);
-
 const displayPosts = (posts) => {
   const postTemplate = document.querySelector('#picture').content;
   const fragment = document.createDocumentFragment();
@@ -31,5 +21,15 @@ const displayPosts = (posts) => {
 
   postsContainer.appendChild(fragment);
 };
+
+const postToDisplay = (evt) => {
+  if (evt.target.tagName !== 'IMG') {
+    return;
+  }
+  const postById = postsArray.find((post) => post.id === Number(evt.target.dataset.id));
+  showBigPicture(postById);
+};
+
+postsContainer.addEventListener('click', postToDisplay);
 
 export {displayPosts};

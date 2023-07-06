@@ -19,27 +19,27 @@ const generateComment = (element) => {
   bigPictureComments.appendChild(comment);
 };
 
-const closeBigPicture = (onEscape) => {
+const onCloseBigPicture = (onEscape) => {
   bigPicture.classList.add('hidden');
   bigPictureImg.textContent = '';
   bigPictureComments.textContent = '';
 
   window.removeEventListener('keydown', onEscape);
-  bigPictureClose.removeEventListener('click', closeBigPicture);
+  bigPictureClose.removeEventListener('click', onCloseBigPicture);
   body.classList.remove('modal-open');
 };
 
 const onEscKeyDown = (evt) => {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    closeBigPicture(onEscKeyDown);
+    onCloseBigPicture(onEscKeyDown);
   }
 };
 
 const showBigPicture = ({url, description, likes, comments}) => {
   let commentsShown = bigPictureComments.children.length;
 
-  const generateCommentCounter = () => {
+  const createCommentCounter = () => {
     bigPictureCommentsShown.textContent = `${commentsShown > comments.length ?
       comments.length : commentsShown} из ${comments.length} комментариев`;
   };
@@ -55,24 +55,27 @@ const showBigPicture = ({url, description, likes, comments}) => {
     bigPictureLoader.classList.remove('hidden');
   }
 
-  const generateMoreComments = () => {
+  const showMoreComments = () => {
     const nextComments = comments.slice(commentsShown, commentsShown + COMMENTS_STEP);
     nextComments.map((comment) => generateComment(comment));
 
     commentsShown += COMMENTS_STEP;
-    generateCommentCounter();
+    createCommentCounter();
 
     if (commentsShown >= comments.length) {
       bigPictureLoader.classList.add('hidden');
-      bigPictureLoader.removeEventListener('click', generateMoreComments);
     }
   };
 
-  bigPictureLoader.addEventListener('click', generateMoreComments);
-  bigPictureClose.addEventListener('click', closeBigPicture);
+  const onLoadClick = () => {
+    showMoreComments();
+  };
+
+  bigPictureLoader.addEventListener('click', onLoadClick);
+  bigPictureClose.addEventListener('click', () => onCloseBigPicture(onEscKeyDown));
   window.addEventListener('keydown', onEscKeyDown);
 
-  generateMoreComments();
+  showMoreComments();
 };
 
 export {showBigPicture};
