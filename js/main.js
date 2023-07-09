@@ -1,8 +1,7 @@
 import { getData } from'./data.js';
-// import { displayPosts } from './posts.js';
 import { initUploadImg } from './upload-img.js';
 import { initFilters } from './posts-filter.js';
+import { onConnectionFail } from './utils.js';
 
-// getData(displayPosts);
-getData(initFilters);
+getData(initFilters, onConnectionFail);
 initUploadImg();

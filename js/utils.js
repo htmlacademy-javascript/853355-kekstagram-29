@@ -2,4 +2,17 @@ const getRandomArrayElement = (elements) => elements[Math.floor(Math.random() * 
 const getRandomWithinRange = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 const getRandomArrayElements = (elements, count) => [...elements].sort(() => 0.5 - Math.random()).slice(0, count);
 
-export { getRandomArrayElement, getRandomWithinRange, getRandomArrayElements };
+const onConnectionFail = () => {
+  const error = document.querySelector('.connection_error');
+  error.classList.remove('visually-hidden');
+};
+
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export { getRandomArrayElement, getRandomWithinRange, getRandomArrayElements, onConnectionFail, debounce };
