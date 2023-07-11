@@ -1,4 +1,5 @@
 const filters = document.querySelector('.img-upload__effects');
+const effectLevelInput = document.querySelector('.effect-level__value');
 const sliderContainer = document.querySelector('.effect-level__slider');
 const sliderParentContainer = document.querySelector('.img-upload__effect-level');
 const imgPreview = document.querySelector('.img-upload__preview img');
@@ -74,6 +75,7 @@ const createSliderListener = (effect, image) => {
   sliderContainer.noUiSlider.on('update', (values, handle) => {
     const value = values[handle];
     sliderSettings[effect].setFilter(image, value);
+    effectLevelInput.value = value;
   });
 };
 

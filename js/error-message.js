@@ -20,6 +20,15 @@ const showErrorMessage = (onEscapeOverlay) => {
     removeErrorMessage(error, onEscapeOverlay);
     window.removeEventListener('keydown', escapeErrorHandler);
   }, {once: true});
+
+  error.addEventListener('click', (evt) => {
+    if (evt.target === error) {
+      removeErrorMessage(error, onEscapeOverlay);
+      window.removeEventListener('keydown', escapeErrorHandler);
+    }
+  }, {once: true});
+
+
   window.addEventListener('keydown', escapeErrorHandler, {once: true});
   document.body.append(error);
 };

@@ -1077,7 +1077,7 @@ main {
   background-position: -5px -149px;
 }
 
-.has-error {
+.pristine-error {
   border: 2px solid red;
   background-color: #f7caca;
 }
@@ -1344,7 +1344,7 @@ main {
           transform: translateX(-50%);
 }
 
-.connection_error {
+.connection__error {
   position: absolute;
   top: 0;
   width: 100%;
@@ -1353,7 +1353,7 @@ main {
   z-index: 1;
 }
 
-.connection_error--text {
+.connection__error--text {
   font-size: 20px;
   padding-left: 5vw;
 }

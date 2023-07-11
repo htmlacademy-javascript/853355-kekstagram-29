@@ -21,6 +21,14 @@ const showSuccessMessage = (onEscapeOverlay) => {
     removeSuccessMessage(success);
     window.removeEventListener('keydown', escapeSuccessHandler);
   }, {once: true});
+
+  success.addEventListener('click', (evt) => {
+    if (evt.target === success) {
+      removeSuccessMessage(success);
+      window.removeEventListener('keydown', escapeSuccessHandler);
+    }
+  }, {once: true});
+
   window.addEventListener('keydown', escapeSuccessHandler, {once: true});
   document.body.append(success);
 };
