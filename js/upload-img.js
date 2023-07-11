@@ -13,6 +13,7 @@ const closeButton = form.querySelector('.img-upload__cancel');
 const hashtagInput = form.querySelector('.text__hashtags');
 const descriptionInput = form.querySelector('.text__description');
 const imgPreview = document.querySelector('.img-upload__preview img');
+const submitButton = form.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(form);
 
@@ -32,7 +33,7 @@ pristine.addValidator(hashtagInput, () => {
   return hashtags.every((hashtag) => /^#[a-zA-Z0-9]*$/.test(hashtag));
 });
 
-const onCloseUploadOverlay = (onEscape) => {
+const closeUploadOverlay = (onEscape) => {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   imgPreview.removeAttribute('style');
@@ -41,34 +42,38 @@ const onCloseUploadOverlay = (onEscape) => {
   window.removeEventListener('keydown',onEscape);
 };
 
+const showValidationError = () => {
+  hashtagInput.classList.add('pristine-error');
+  descriptionInput.classList.add('pristine-error');
+  setTimeout(() => {
+    hashtagInput.classList.remove('pristine-error');
+    descriptionInput.classList.remove('pristine-error');
+  }, ERROR_DURATION);
+};
+
 const onEscapeOverlay = (evt) => {
   if (evt.key === 'Escape') {
     if (!(hashtagInput === document.activeElement || !descriptionInput === document.activeElement)) {
-      onCloseUploadOverlay(onEscapeOverlay);
+      closeUploadOverlay(onEscapeOverlay);
     }
   }
 };
 
-const showValidationError = () => {
-  hashtagInput.classList.add('has-error');
-  descriptionInput.classList.add('has-error');
-  setTimeout(() => {
-    hashtagInput.classList.remove('has-error');
-    descriptionInput.classList.remove('has-error');
-  }, ERROR_DURATION);
-};
+const onCloseUploadOverlay = () => closeUploadOverlay(onEscapeOverlay);
 
 const onSuccess = (cb) => {
-  onCloseUploadOverlay();
+  closeUploadOverlay(onEscapeOverlay);
   showSuccessMessage(onEscapeOverlay);
 
-  closeButton.removeEventListener('click', () => onCloseUploadOverlay(onEscapeOverlay));
+  submitButton.disabled = false;
+  closeButton.removeEventListener('click', onCloseUploadOverlay);
   form.removeEventListener('submit', cb);
 };
 
 const onFail = () => {
   showErrorMessage(onEscapeOverlay);
   window.removeEventListener('keydown',onEscapeOverlay);
+  submitButton.disabled = false;
 };
 
 const onFormSubmit = (evt) => {
@@ -76,6 +81,7 @@ const onFormSubmit = (evt) => {
   evt.preventDefault();
   if (isValid) {
     postData(onSuccess, onFail, onFormSubmit, form);
+    submitButton.disabled = true;
   } else {
     showValidationError();
   }
@@ -95,7 +101,7 @@ const onOpenUploadOverlay = (evt) => {
 
   initZoom();
 
-  closeButton.addEventListener('click', () => onCloseUploadOverlay(onEscapeOverlay));
+  closeButton.addEventListener('click', onCloseUploadOverlay);
   window.addEventListener('keydown',onEscapeOverlay);
   form.addEventListener('submit', onFormSubmit);
 };

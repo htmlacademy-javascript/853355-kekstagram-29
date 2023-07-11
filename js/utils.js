@@ -3,7 +3,7 @@ const getRandomWithinRange = (min, max) => Math.floor(Math.random() * (max - min
 const getRandomArrayElements = (elements, count) => [...elements].sort(() => 0.5 - Math.random()).slice(0, count);
 
 const onConnectionFail = () => {
-  const error = document.querySelector('.connection_error');
+  const error = document.querySelector('.connection__error');
   error.classList.remove('visually-hidden');
 };
 

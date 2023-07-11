@@ -3,10 +3,12 @@ const MAX_HASHTAGS_COUNT = 5;
 const ERROR_DURATION = 5000;
 const POSTS_COUNT = 10;
 
-const MAX_SCALE_VALUE = 100;
-const MIN_SCALE_VALUE = 25;
-const STEP_SCALE_VALUE = 25;
-const DEFAULT_SCALE_VALUE = 100;
+const ScaleValue = {
+  MAX: 100,
+  MIN: 25,
+  STEP: 25,
+  DEFAULT: 100
+};
 
 const AvatarRange = {
   MIN: 1,
@@ -24,10 +26,7 @@ const CommentsRange = {
 };
 
 export {
-  MAX_SCALE_VALUE,
-  MIN_SCALE_VALUE,
-  STEP_SCALE_VALUE,
-  DEFAULT_SCALE_VALUE,
+  ScaleValue,
   AvatarRange, LikesRange,
   CommentsRange,
   COMMENTS_STEP,
