@@ -1,5 +1,5 @@
 import { ERROR_DURATION, MAX_HASHTAGS_COUNT, MAX_HASHTAG_LENGTH } from './const.js';
-import { initSlider } from './image-edit.js';
+import { initSlider, handleFilterChange } from './image-edit.js';
 import { postData } from './data.js';
 import { showErrorMessage } from './error-message.js';
 import { showSuccessMessage } from './success-message.js';
@@ -15,6 +15,9 @@ const descriptionInput = form.querySelector('.text__description');
 const imgPreview = document.querySelector('.img-upload__preview img');
 const submitButton = form.querySelector('.img-upload__submit');
 const inputError = form.querySelector('.img-upload__text--error');
+const filters = document.querySelector('.img-upload__effects');
+
+let onSubmit = null;
 
 const pristine = new Pristine(form);
 
@@ -77,7 +80,13 @@ const closeUploadOverlay = (onEscape) => {
   imgPreview.removeAttribute('style');
   imgPreview.removeAttribute('class');
   form.reset();
+
+  if (onSubmit) {
+    form.removeEventListener('submit', onSubmit);
+  }
+
   window.removeEventListener('keydown',onEscape);
+  filters.removeEventListener('change', handleFilterChange);
 };
 
 const showValidationError = () => {
@@ -128,6 +137,7 @@ const onFormSubmit = (evt) => {
 const onOpenUploadOverlay = (evt) => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
+  onSubmit = onFormSubmit;
 
   initSlider();
 

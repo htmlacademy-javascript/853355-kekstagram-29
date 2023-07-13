@@ -108,8 +108,7 @@ const initSlider = () => {
     currentSlider.destroy();
   }
 
-  filters.removeEventListener('change', handleFilterChange);
   filters.addEventListener('change', handleFilterChange);
 };
 
-export {initSlider};
+export {initSlider, handleFilterChange};
