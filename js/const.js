@@ -1,7 +1,6 @@
 const COMMENTS_STEP = 5;
 const MAX_HASHTAGS_COUNT = 5;
 const MAX_HASHTAG_LENGTH = 20;
-const ERROR_DURATION = 5000;
 const POSTS_COUNT = 10;
 
 const ScaleValue = {
@@ -33,6 +32,5 @@ export {
   COMMENTS_STEP,
   MAX_HASHTAGS_COUNT,
   MAX_HASHTAG_LENGTH,
-  ERROR_DURATION,
   POSTS_COUNT
 };

@@ -1,4 +1,4 @@
-import { ERROR_DURATION, MAX_HASHTAGS_COUNT, MAX_HASHTAG_LENGTH } from './const.js';
+import { MAX_HASHTAGS_COUNT, MAX_HASHTAG_LENGTH } from './const.js';
 import { initSlider, handleFilterChange } from './image-edit.js';
 import { postData } from './data.js';
 import { showErrorMessage } from './error-message.js';
@@ -72,6 +72,8 @@ pristine.addValidator(hashtagInput, () => {
     showValidationMessage('Hashtags must start with a # and can contain only letters and numbers');
     return false;
   }
+
+  return true;
 });
 
 const closeUploadOverlay = (onEscape) => {
@@ -87,15 +89,6 @@ const closeUploadOverlay = (onEscape) => {
 
   window.removeEventListener('keydown',onEscape);
   filters.removeEventListener('change', handleFilterChange);
-};
-
-const showValidationError = () => {
-  hashtagInput.classList.add('pristine-error');
-  descriptionInput.classList.add('pristine-error');
-  setTimeout(() => {
-    hashtagInput.classList.remove('pristine-error');
-    descriptionInput.classList.remove('pristine-error');
-  }, ERROR_DURATION);
 };
 
 const onEscapeOverlay = (evt) => {
@@ -130,7 +123,7 @@ const onFormSubmit = (evt) => {
     postData(onSuccess, onFail, onFormSubmit, form);
     submitButton.disabled = true;
   } else {
-    showValidationError();
+    showValidationMessage('something is wrong');
   }
 };
 
