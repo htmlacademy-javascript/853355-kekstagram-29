@@ -3,12 +3,18 @@ const POST_URL = 'https://29.javascript.pages.academy/kekstagram';
 
 const getData = (cb, onConnectionFail) => {
   fetch(GET_URL)
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+    })
     .then((data) => {
       cb(data);
     })
-    .catch(() => {
-      onConnectionFail();
+    .catch((error) => {
+      onConnectionFail(error);
     });
 };
 

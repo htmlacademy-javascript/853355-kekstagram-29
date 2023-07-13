@@ -2,8 +2,10 @@ const getRandomArrayElement = (elements) => elements[Math.floor(Math.random() * 
 const getRandomWithinRange = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 const getRandomArrayElements = (elements, count) => [...elements].sort(() => 0.5 - Math.random()).slice(0, count);
 
-const onConnectionFail = () => {
-  const error = document.querySelector('.connection__error');
+const onConnectionFail = (text) => {
+  const error = document.querySelector('.connection-error');
+  const errorText = error.querySelector('.connection-error--text');
+  errorText.textContent = text;
   error.classList.remove('visually-hidden');
 };
 
