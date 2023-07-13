@@ -11,7 +11,7 @@ const sliderSettings = {
     min: 0,
     max: 1,
     step: 0.1,
-    start: 0,
+    start: 1,
     setFilter: (image, value) => {
       image.style.filter = `grayscale(${value})`;
     }
@@ -20,7 +20,7 @@ const sliderSettings = {
     min: 0,
     max: 1,
     step: 0.1,
-    start: 0,
+    start: 1,
     setFilter: (image, value) => {
       image.style.filter = `sepia(${value})`;
     }
@@ -29,7 +29,7 @@ const sliderSettings = {
     min: 0,
     max: 100,
     step: 1,
-    start: 0,
+    start: 100,
     setFilter: (image, value) => {
       image.style.filter = `invert(${value}%)`;
     }
@@ -38,7 +38,7 @@ const sliderSettings = {
     min: 0,
     max: 3,
     step: 0.1,
-    start: 0,
+    start: 3,
     setFilter: (image, value) => {
       image.style.filter = `blur(${value}px)`;
     }
@@ -47,7 +47,7 @@ const sliderSettings = {
     min: 1,
     max: 3,
     step: 0.1,
-    start: 1,
+    start: 3,
     setFilter: (image, value) => {
       image.style.filter = `brightness(${value})`;
     }
@@ -84,29 +84,31 @@ const createSlider = (effect) => {
   createSliderManager(min, max, step, start);
 };
 
+const handleFilterChange = (evt) => {
+  if (evt.target.classList.contains('effects__radio')) {
+    const effect = evt.target.value;
+    imgPreview.removeAttribute('class');
+    imgPreview.style.filter = '';
+    sliderParentContainer.classList.add('hidden');
+    sliderContainer.classList.add('hidden');
+
+    if (effect !== 'none') {
+      sliderParentContainer.classList.remove('hidden');
+      sliderContainer.classList.remove('hidden');
+      imgPreview.classList.add(`effects__preview--${effect}`);
+      createSlider(effect);
+      createSliderListener(effect, imgPreview);
+    }
+  }
+};
+
 const initSlider = () => {
   if (currentSlider) {
     sliderParentContainer.classList.add('hidden');
     currentSlider.destroy();
   }
 
-  filters.addEventListener('change', (evt) => {
-    if (evt.target.classList.contains('effects__radio')) {
-      const effect = evt.target.value;
-      imgPreview.removeAttribute('class');
-      imgPreview.style.filter = '';
-      sliderParentContainer.classList.add('hidden');
-      sliderContainer.classList.add('hidden');
-
-      if (effect !== 'none') {
-        sliderParentContainer.classList.remove('hidden');
-        sliderContainer.classList.remove('hidden');
-        imgPreview.classList.add(`effects__preview--${effect}`);
-        createSlider(effect);
-        createSliderListener(effect, imgPreview);
-      }
-    }
-  });
+  filters.addEventListener('change', handleFilterChange);
 };
 
-export {initSlider};
+export {initSlider, handleFilterChange};

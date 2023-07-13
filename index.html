@@ -11,8 +11,8 @@
 </head>
 
 <body>
-  <div class="connection_error visually-hidden">
-    <p class="connection_error--text">Нет подключения</p>
+  <div class="connection-error visually-hidden">
+    <p class="connection-error--text">Нет подключения</p>
   </div>
   <main>
 
@@ -125,8 +125,9 @@
 
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
+                  <p class="img-upload__text--error visually-hidden">Error Message</p>
                   <div class="img-upload__field-wrapper">
-                    <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" maxlength="20" minlength="2">
+                    <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" minlength="2">
                   </div>
                   <div class="img-upload__field-wrapper">
                     <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>

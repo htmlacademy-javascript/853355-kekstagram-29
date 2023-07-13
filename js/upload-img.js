@@ -1,5 +1,5 @@
-import { ERROR_DURATION, MAX_HASHTAGS_COUNT } from './const.js';
-import { initSlider } from './image-edit.js';
+import { MAX_HASHTAGS_COUNT, MAX_HASHTAG_LENGTH } from './const.js';
+import { initSlider, handleFilterChange } from './image-edit.js';
 import { postData } from './data.js';
 import { showErrorMessage } from './error-message.js';
 import { showSuccessMessage } from './success-message.js';
@@ -14,23 +14,66 @@ const hashtagInput = form.querySelector('.text__hashtags');
 const descriptionInput = form.querySelector('.text__description');
 const imgPreview = document.querySelector('.img-upload__preview img');
 const submitButton = form.querySelector('.img-upload__submit');
+const inputError = form.querySelector('.img-upload__text--error');
+const filters = document.querySelector('.img-upload__effects');
+
+let onSubmit = null;
 
 const pristine = new Pristine(form);
 
+const showValidationMessage = (message) => {
+  hashtagInput.classList.add('pristine-error');
+  descriptionInput.classList.add('pristine-error');
+  inputError.classList.remove('visually-hidden');
+  inputError.textContent = message;
+  submitButton.disabled = true;
+};
+
+const removeValidationMessage = () => {
+  hashtagInput.classList.remove('pristine-error');
+  descriptionInput.classList.remove('pristine-error');
+  inputError.classList.add('visually-hidden');
+  submitButton.disabled = false;
+};
+
 pristine.addValidator(hashtagInput, () => {
-  const hashtags = hashtagInput.value.split(' ');
-  if (hashtags.length === 1 && hashtags[0] === '') {
+  const hashtags = hashtagInput.value.split(/\s+/);
+  const hashtagsInLowerCase = hashtags.map((hashtag) => hashtag.toLowerCase());
+  const filteredHashtags = hashtagsInLowerCase.filter((hashtag) => hashtag !== '');
+  removeValidationMessage();
+
+  if (hashtagInput.value.length === 0) {
     return true;
   }
-  if (hashtags.length > MAX_HASHTAGS_COUNT) {
+
+  if (!filteredHashtags.every((hashtag) => hashtag.length !== 1 && hashtag !== '#')) {
+    showValidationMessage('Cannot use only hashtag');
     return false;
   }
 
-  if (hashtags.length !== new Set(hashtags).size) {
+  if (filteredHashtags.every((hashtag) => hashtag.length > MAX_HASHTAG_LENGTH)) {
+    showValidationMessage('Hashtag cannot be more than 20 characters');
     return false;
   }
 
-  return hashtags.every((hashtag) => /^#[a-zA-Z0-9]*$/.test(hashtag));
+  if (filteredHashtags.length > MAX_HASHTAGS_COUNT) {
+    showValidationMessage('Too many hashtags');
+    return false;
+  }
+
+  if (filteredHashtags.length !== new Set(filteredHashtags).size) {
+    showValidationMessage('Hashtags must be unique');
+    return false;
+  }
+
+  const areHashtagsValid = () => filteredHashtags.every((hashtag) => /^#[a-zA-Z0-9]*$/.test(hashtag));
+
+  if (!areHashtagsValid()) {
+    showValidationMessage('Hashtags must start with a # and can contain only letters and numbers');
+    return false;
+  }
+
+  return true;
 });
 
 const closeUploadOverlay = (onEscape) => {
@@ -39,21 +82,18 @@ const closeUploadOverlay = (onEscape) => {
   imgPreview.removeAttribute('style');
   imgPreview.removeAttribute('class');
   form.reset();
-  window.removeEventListener('keydown',onEscape);
-};
 
-const showValidationError = () => {
-  hashtagInput.classList.add('pristine-error');
-  descriptionInput.classList.add('pristine-error');
-  setTimeout(() => {
-    hashtagInput.classList.remove('pristine-error');
-    descriptionInput.classList.remove('pristine-error');
-  }, ERROR_DURATION);
+  if (onSubmit) {
+    form.removeEventListener('submit', onSubmit);
+  }
+
+  window.removeEventListener('keydown',onEscape);
+  filters.removeEventListener('change', handleFilterChange);
 };
 
 const onEscapeOverlay = (evt) => {
   if (evt.key === 'Escape') {
-    if (!(hashtagInput === document.activeElement || !descriptionInput === document.activeElement)) {
+    if (!(hashtagInput === document.activeElement || descriptionInput === document.activeElement)) {
       closeUploadOverlay(onEscapeOverlay);
     }
   }
@@ -83,13 +123,14 @@ const onFormSubmit = (evt) => {
     postData(onSuccess, onFail, onFormSubmit, form);
     submitButton.disabled = true;
   } else {
-    showValidationError();
+    showValidationMessage('something is wrong');
   }
 };
 
 const onOpenUploadOverlay = (evt) => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
+  onSubmit = onFormSubmit;
 
   initSlider();
 

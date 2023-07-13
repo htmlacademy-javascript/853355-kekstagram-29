@@ -1078,7 +1078,6 @@ main {
 }
 
 .pristine-error {
-  border: 2px solid red;
   background-color: #f7caca;
 }
 
@@ -1344,7 +1343,7 @@ main {
           transform: translateX(-50%);
 }
 
-.connection__error {
+.connection-error {
   position: absolute;
   top: 0;
   width: 100%;
@@ -1353,9 +1352,13 @@ main {
   z-index: 1;
 }
 
-.connection__error--text {
+.connection-error--text {
   font-size: 20px;
   padding-left: 5vw;
+}
+
+.img-upload__text--error {
+  text-transform: none;
 }
 
 
