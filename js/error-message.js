@@ -2,7 +2,7 @@ const errorMessage = document.querySelector('#error').content.querySelector('.er
 
 const removeErrorMessage = (error, onEscapeOverlay) => {
   error.remove();
-  window.addEventListener('keydown',onEscapeOverlay);
+  window.addEventListener('keydown', onEscapeOverlay);
 };
 
 const onEscapeErrorMessage = (evt, error) => {
@@ -19,15 +19,16 @@ const showErrorMessage = (onEscapeOverlay) => {
   button.addEventListener('click', () => {
     removeErrorMessage(error, onEscapeOverlay);
     window.removeEventListener('keydown', escapeErrorHandler);
-  }, {once: true});
+  });
 
-  error.addEventListener('click', (evt) => {
+  const errorMessageHandler = (evt) => {
     if (evt.target === error) {
       removeErrorMessage(error, onEscapeOverlay);
       window.removeEventListener('keydown', escapeErrorHandler);
     }
-  }, {once: true});
+  };
 
+  error.addEventListener('click', errorMessageHandler);
 
   window.addEventListener('keydown', escapeErrorHandler, {once: true});
   document.body.append(error);

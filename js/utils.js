@@ -3,10 +3,10 @@ const getRandomWithinRange = (min, max) => Math.floor(Math.random() * (max - min
 const getRandomArrayElements = (elements, count) => [...elements].sort(() => 0.5 - Math.random()).slice(0, count);
 
 const onConnectionFail = (text) => {
-  const error = document.querySelector('.connection-error');
+  const error = document.querySelector('#connection-error').content.querySelector('.connection-error').cloneNode(true);
   const errorText = error.querySelector('.connection-error--text');
   errorText.textContent = text;
-  error.classList.remove('visually-hidden');
+  document.body.append(error);
 };
 
 const debounce = (callback, timeoutDelay = 500) => {
