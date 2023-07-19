@@ -11,7 +11,7 @@ const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
 const bigPictureComment = document.getElementById('comment_item');
 const body = document.querySelector('body');
 
-let currentComments = null;
+let closeHandler = null;
 
 const generateComment = (element) => {
   const comment = bigPictureComment.content.cloneNode(true);
@@ -41,22 +41,21 @@ const onCloseBigPicture = (onEscape, onLoadClick) => {
   bigPictureComments.textContent = '';
 
   window.removeEventListener('keydown', onEscape);
-  bigPictureClose.removeEventListener('click', onCloseBigPicture);
+  bigPictureClose.removeEventListener('click', closeHandler);
   bigPictureLoader.removeEventListener('click', onLoadClick);
   body.classList.remove('modal-open');
 };
 
-const onLoadComments = () => showMoreComments(currentComments);
-
 const onEscKeyDown = (evt) => {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    onCloseBigPicture(onEscKeyDown, onLoadComments);
+    closeHandler();
   }
 };
 
 const showBigPicture = ({url, description, likes, comments}) => {
-  currentComments = comments;
+  const onLoadComments = () => showMoreComments(comments);
+  closeHandler = () => onCloseBigPicture(onEscKeyDown, onLoadComments);
 
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -65,12 +64,13 @@ const showBigPicture = ({url, description, likes, comments}) => {
   bigPictureDescription.textContent = description;
   bigPictureLikesCount.textContent = likes;
 
-  if (currentComments.length > COMMENTS_STEP && bigPictureLoader.classList.contains('hidden')) {
+  if (comments.length > COMMENTS_STEP && bigPictureLoader.classList.contains('hidden')) {
     bigPictureLoader.classList.remove('hidden');
   }
 
+
   bigPictureLoader.addEventListener('click', onLoadComments);
-  bigPictureClose.addEventListener('click', () => onCloseBigPicture(onEscKeyDown, onLoadComments));
+  bigPictureClose.addEventListener('click', closeHandler);
   window.addEventListener('keydown', onEscKeyDown);
 
   showMoreComments(comments);

@@ -155,7 +155,7 @@ const onFormSubmit = (evt) => {
     submitButton.disabled = true;
     removeValidationNotification();
   } else {
-    showValidationMessage('Form is not valid');
+    showValidationMessage('Form is not valid. Please check the fields');
   }
 };
 
