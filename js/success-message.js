@@ -15,19 +15,22 @@ const showSuccessMessage = (onEscapeOverlay) => {
   const button = success.querySelector('.success__button');
   const escapeSuccessHandler = (evt) => onEscapeSuccessMessage(evt, success);
 
-  window.removeEventListener('keydown',onEscapeOverlay);
+  window.removeEventListener('keydown', onEscapeOverlay);
 
   button.addEventListener('click', () => {
     removeSuccessMessage(success);
     window.removeEventListener('keydown', escapeSuccessHandler);
-  }, {once: true});
+  });
 
-  success.addEventListener('click', (evt) => {
+
+  const successMessageHandler = (evt) => {
     if (evt.target === success) {
       removeSuccessMessage(success);
       window.removeEventListener('keydown', escapeSuccessHandler);
     }
-  }, {once: true});
+  };
+
+  success.addEventListener('click', successMessageHandler);
 
   window.addEventListener('keydown', escapeSuccessHandler, {once: true});
   document.body.append(success);

@@ -1361,6 +1361,10 @@ main {
   text-transform: none;
 }
 
+.img-upload__description--error {
+  text-transform: none;
+}
+
 
 /* Адаптивности чуток
    ========================================================================== */

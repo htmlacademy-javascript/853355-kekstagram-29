@@ -11,9 +11,6 @@
 </head>
 
 <body>
-  <div class="connection-error visually-hidden">
-    <p class="connection-error--text">Нет подключения</p>
-  </div>
   <main>
 
     <!-- Фильтрация изображений от других пользователей -->
@@ -129,8 +126,9 @@
                   <div class="img-upload__field-wrapper">
                     <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" minlength="2">
                   </div>
+                  <p class="img-upload__description--error visually-hidden">Error Message</p>
                   <div class="img-upload__field-wrapper">
-                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
+                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
                   </div>
                 </fieldset>
 
@@ -231,11 +229,17 @@
     </section>
   </template>
 
-  <template id='comment_item'>
+  <template id="comment_item">
     <li class="social__comment">
       <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
       <p class="social__text">Мега фото! Просто обалдеть. Как вам так удалось?</p>
     </li>
+  </template>
+
+  <template id="connection-error">
+    <div class="connection-error">
+      <p class="connection-error--text">Нет подключения</p>
+    </div>
   </template>
 
   <!-- <template id='connection_error'>
